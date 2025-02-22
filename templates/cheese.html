@@ -98,7 +98,7 @@
         <!-- Left side: Exercise Image -->
         <div id="leftContainer">
           <h2>Exercise Image</h2>
-          <img id="exerciseImage" src="{{ url_for('static', filename='images/sauce0.png') }}" alt="Exercise Step">
+          <img id="exerciseImage" src="{{ url_for('static', filename='images/cheese0.png') }}" alt="Exercise Step">
         </div>
         <!-- Right side: Video feed on top, instructions & progress on bottom -->
         <div id="rightContainer">
@@ -123,7 +123,7 @@
 
     <script>
         // This will output something like "/static/images/knead"
-        var baseUrl = "{{ url_for('static', filename='images/sauce') }}";
+        var baseUrl = "{{ url_for('static', filename='images/cheese') }}";
     </script>
 
     <script>
@@ -165,7 +165,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = '/cheesepizza';  // Redirect after reset
+                        window.location.href = '/toppizza';  // Redirect after reset
                     }
                 })
                 .catch(error => console.error('Error resetting counter:', error));

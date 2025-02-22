@@ -24,6 +24,30 @@ def knead():
 def toss():
     return render_template('toss.html')
 
+@app.route('/saucepizza')
+def sauce():
+    return render_template('sauce.html')
+
+@app.route('/cheesepizza')
+def cheese():
+    return render_template('cheese.html')
+
+@app.route('/toppizza')
+def toppings():
+    return render_template('toppings.html')
+
+@app.route('/cookpizza')
+def oven():
+    return render_template('oven.html')
+
+@app.route('/cutpizza')
+def cut():
+    return render_template('cut.html')
+
+@app.route('/eatpizza')
+def eat():
+    return render_template('eat.html')
+
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(camera),
