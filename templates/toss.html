@@ -98,7 +98,7 @@
         <!-- Left side: Exercise Image -->
         <div id="leftContainer">
           <h2>Exercise Image</h2>
-          <img id="exerciseImage" src="{{ url_for('static', filename='images/knead0.png') }}" alt="Exercise Step">
+          <img id="exerciseImage" src="{{ url_for('static', filename='images/roll0.png') }}" alt="Exercise Step">
         </div>
         <!-- Right side: Video feed on top, instructions & progress on bottom -->
         <div id="rightContainer">
@@ -117,12 +117,13 @@
               Counter: 0
             </div>
           </div>
+          <button onclick="window.location.href='/'">Back to Landing</button>
         </div>
     </div>
 
     <script>
         // This will output something like "/static/images/knead"
-        var baseUrl = "{{ url_for('static', filename='images/knead') }}";
+        var baseUrl = "{{ url_for('static', filename='images/roll') }}";
     </script>
 
     <script>

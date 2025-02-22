@@ -34,12 +34,12 @@ class Capture:
         ret, frame = self.video.read()
         if not ret:
             return None
-        
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image.flags.writeable = False
         results = self.pose.process(image)
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        # image = cv2.flip(image, 1)
 
         try:
             landmarks = results.pose_landmarks.landmark
