@@ -5,8 +5,8 @@
     <title>Gamified Physical Therapy</title>
     <style>
         #exerciseImage {
-            width: 640px;
-            height: 480px;
+            width: 800px;
+            height: 800px;
             border: 1px solid #ccc;
         }
             /* Progress bar container */
@@ -40,7 +40,7 @@
 <body>
     <h1>Physical Therapy Dashboard</h1>
 
-    <img id="exerciseImage" src="/pizza_pics/knead0.png" alt="Exercise Step">
+    <img id="exerciseImage" src="{{ url_for('static', filename='images/knead0.png') }}" alt="Exercise Step">
 
     <div id="progressContainer">
         <div id="progressBar">0 / 6</div>
@@ -67,11 +67,11 @@
                 
                 // Update the image based on the counter value (0 to 5)
                 if (counter < 6) {
-                    imgElement.src = '/pizza_pics/knead' + counter + '.png';
+                    imgElement.src = '/static/images/knead' + counter + '.png';
                     nextLevelButton.style.display = 'none';
                 } else {
                     // When counter reaches 6, keep the final image and show the button
-                    imgElement.src = '/pizza_pics/knead5.png';
+                    imgElement.src = '/static/images/knead5.png';
                     nextLevelButton.style.display = 'block';
                 }
                 
@@ -82,6 +82,7 @@
             })
             .catch(error => console.error('Error fetching counter:', error));
         }
+
 
         function goToNextLevel() {
             // Redirect to the next level route
