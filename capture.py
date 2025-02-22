@@ -17,18 +17,47 @@ def calculate_angle(a, b, c):
     return angle
 
 class Capture:
-    def __init__(self):
+    def __init__(self, mode: int):
         self.video = cv2.VideoCapture(0)
 
         self.mp_pose = mp.solutions.pose
         self.mp_drawing = mp.solutions.drawing_utils
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+        self.mode = mode
 
         self.counter = 0
         self.stage = None
 
     def __del__(self):
         self.video.release()
+
+    def bicep_curls(self, angle: float, angle_r: float):
+        # Curl counter logic for left arm (example)
+        if angle > 160:
+            self.stage = "down"
+        if angle < 30 and self.stage == 'down':
+            self.stage = "up"
+            self.counter += 1
+            print("Rep Count:", self.counter)
+
+    def lat_raises(self, avg_shoulder: float, avg_wrist: float):
+        # Lat raise counter logic for left arm (example)
+        if avg_wrist > avg_shoulder + 0.1:  # Arms Down (0.1 is buffer)
+                self.stage = "down"
+        if avg_wrist < avg_shoulder - 0.2 and self.stage == "down":  # Arms Up
+            self.stage = "up"
+            self.counter += 1
+            print("Rep Count:", self.counter)
+
+    def band_pulls(self, wrist_distance: float, left_elbow_angle: float, right_elbow_angle: float):
+        # Lat raise counter logic for left arm (example)
+        if wrist_distance < 0.2:
+                self.stage = "together"
+        if wrist_distance > 0.4 and self.stage == "together":
+            self.stage = "apart"
+            self.counter += 1
+            print("Rep Count:", self.counter)
+        
 
     def get_frame(self):
         ret, frame = self.video.read()
@@ -64,6 +93,14 @@ class Capture:
             angle = calculate_angle(shoulder, elbow, wrist)
             angle_r = calculate_angle(shoulder_r, elbow_r, wrist_r)
 
+            avg_shoulder_y = (shoulder[1] + shoulder_r[1]) / 2
+            avg_wrist_y = (wrist[1] + wrist_r[1]) / 2
+
+            wrist_distance = np.sqrt(
+                (wrist[0] - wrist_r[0]) ** 2 +
+                (wrist[1] - wrist_r[1]) ** 2
+            )
+
             # Visualize the calculated angles on the frame
             cv2.putText(image, str(int(angle)),
                         tuple(np.multiply(elbow, [640, 480]).astype(int)),
@@ -72,13 +109,12 @@ class Capture:
                         tuple(np.multiply(elbow_r, [640, 480]).astype(int)),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
 
-            # Curl counter logic for left arm (example)
-            if angle > 160:
-                self.stage = "down"
-            if angle < 30 and self.stage == 'down':
-                self.stage = "up"
-                self.counter += 1
-                print("Rep Count:", self.counter)
+            if self.mode == 0:
+                self.bicep_curls(angle, angle_r)
+            elif self.mode == 1:
+                self.lat_raises(avg_shoulder_y, avg_wrist_y)
+            elif self.mode == 2:
+                self.band_pulls(wrist_distance, angle, angle_r)
 
         except Exception as e:
             # In case landmarks are not detected or any error occurs
@@ -106,4 +142,5 @@ class Capture:
         # Encode the processed frame in JPEG format
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
+    
         

@@ -2,7 +2,7 @@ from flask import Flask, render_template, Response, jsonify
 from capture import Capture
 
 app = Flask(__name__)
-camera = Capture()
+camera = Capture(0)
 
 def generate_frames(camera):
     while True:
@@ -18,34 +18,50 @@ def landing():
 
 @app.route('/kneadpizza')
 def knead():
+    global camera
+    camera = Capture(2)
     return render_template('knead.html')
 
 @app.route('/tosspizza')
 def toss():
+    global camera
+    camera = Capture(1)
     return render_template('toss.html')
 
 @app.route('/saucepizza')
 def sauce():
+    global camera
+    camera = Capture(0)
     return render_template('sauce.html')
 
 @app.route('/cheesepizza')
 def cheese():
+    global camera
+    camera = Capture(0)
     return render_template('cheese.html')
 
 @app.route('/toppizza')
 def toppings():
+    global camera
+    camera = Capture(0)
     return render_template('toppings.html')
 
 @app.route('/cookpizza')
 def oven():
+    global camera
+    camera = Capture(0)
     return render_template('oven.html')
 
 @app.route('/cutpizza')
 def cut():
+    global camera
+    camera = Capture(0)
     return render_template('cut.html')
 
 @app.route('/eatpizza')
 def eat():
+    global camera
+    camera = Capture(0)
     return render_template('eat.html')
 
 @app.route('/video_feed')
