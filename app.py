@@ -31,7 +31,7 @@ def toss():
 @app.route('/saucepizza')
 def sauce():
     global camera
-    camera = Capture(0)
+    camera = Capture(3)
     return render_template('sauce.html')
 
 @app.route('/cheesepizza')
@@ -55,7 +55,7 @@ def oven():
 @app.route('/cutpizza')
 def cut():
     global camera
-    camera = Capture(0)
+    camera = Capture(4)
     return render_template('cut.html')
 
 @app.route('/eatpizza')

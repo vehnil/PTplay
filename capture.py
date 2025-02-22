@@ -27,6 +27,13 @@ class Capture:
 
         self.counter = 0
         self.stage = None
+        self.angles = []
+
+    def calculate_angle(self, a, b):
+        delta_x = b[0] - a[0]
+        delta_y = b[1] - a[1]
+        angle = np.arctan2(delta_y, delta_x) * (180.0 / np.pi)
+        return angle if angle >= 0 else angle + 360
 
     def __del__(self):
         self.video.release()
@@ -50,14 +57,47 @@ class Capture:
             print("Rep Count:", self.counter)
 
     def band_pulls(self, wrist_distance: float, left_elbow_angle: float, right_elbow_angle: float):
-        # Lat raise counter logic for left arm (example)
+        # band pull counter logic for left arm (example)
         if wrist_distance < 0.2:
                 self.stage = "together"
         if wrist_distance > 0.4 and self.stage == "together":
             self.stage = "apart"
             self.counter += 1
             print("Rep Count:", self.counter)
+
+    def hooks(self):
+        # Hook counter logic for left arm (example)
+        if len(self.angles) > 20:
+            angle_range = max(self.angles) - min(self.angles)
+
+            # Starting hook
+            if angle_range > 90 and self.stage != 'in_progress':
+                self.stage = 'in_progress'
+
+            # Complete hook (full circle)
+            if angle_range > 300 and self.stage == 'in_progress':
+                self.counter += 1
+                self.stage = 'complete'
+                self.angles = []  # Reset for next rep
+
+            # Reset stage when arm returns
+            if angle_range < 50 and self.stage == 'complete':
+                self.stage = 'ready'
         
+    def slices(self, angle_l, angle_r):
+        if angle_l < 30:
+            self.l_stage = 'up'  # Hand moved up
+        
+        if angle_r < 30:
+            self.r_stage = 'up'  # Hand moved up
+
+        if angle_l > 130 and self.l_stage == 'up':
+            self.l_stage = 'down'
+            self.counter += 1
+            
+        if angle_r > 130 and self.r_stage == 'up':
+            self.r_stage = 'down'
+            self.counter += 1  # Count when going from up → down
 
     def get_frame(self):
         ret, frame = self.video.read()
@@ -101,6 +141,12 @@ class Capture:
                 (wrist[1] - wrist_r[1]) ** 2
             )
 
+            shoulder_wrist_angle = self.calculate_angle(shoulder, wrist)
+            self.angles.append(shoulder_wrist_angle)
+
+            wrist_px_l = tuple(np.multiply(wrist, [640, 480]).astype(int))
+            wrist_px_r = tuple(np.multiply(wrist_r, [640, 480]).astype(int))
+
             # Visualize the calculated angles on the frame
             cv2.putText(image, str(int(angle)),
                         tuple(np.multiply(elbow, [640, 480]).astype(int)),
@@ -115,6 +161,10 @@ class Capture:
                 self.lat_raises(avg_shoulder_y, avg_wrist_y)
             elif self.mode == 2:
                 self.band_pulls(wrist_distance, angle, angle_r)
+            elif self.mode == 3:
+                self.hooks()
+            elif self.mode == 4:
+                self.slices(angle, angle_r)
 
         except Exception as e:
             # In case landmarks are not detected or any error occurs
