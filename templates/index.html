@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gamified Physical Therapy</title>
+</head>
+<body>
+    <h1>Physical Therapy Dashboard</h1>
+
+    <!-- Optionally include the video stream for debugging, but hide it if not needed -->
+    <img src="{{ url_for('video_feed') }}" alt="Video Feed" style="display: none;">
+
+    <div id="counterDisplay" style="font-size: 2em; margin-top: 20px;">
+        Counter: 0
+    </div>
+
+    <script>
+        // Poll the /counter endpoint every second to update the counter display
+        function updateCounter() {
+            fetch('/counter')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('counterDisplay').innerText = "Counter: " + data.counter;
+                })
+                .catch(error => console.error('Error fetching counter:', error));
+        }
+        setInterval(updateCounter, 1000); // update every 1000 milliseconds
+    </script>
+</body>
+</html>
