@@ -3,9 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Gamified Physical Therapy</title>
+    <style>
+        #exerciseImage {
+            width: 640px;
+            height: 480px;
+            border: 1px solid #ccc;
+        }
+            /* Progress bar container */
+        #progressContainer {
+            width: 640px;
+            background-color: #ddd;
+            margin-top: 20px;
+            height: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+            /* Progress bar fill */
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            transition: width 0.5s ease;
+        }
+            /* Hide the button by default */
+        #nextLevelButton {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 10px 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Physical Therapy Dashboard</h1>
+
+    <img id="exerciseImage" src="/pizza_pics/knead0.png" alt="Exercise Step">
+
+    <div id="progressContainer">
+        <div id="progressBar">0 / 6</div>
+    </div>
+
+    <button id="nextLevelButton" onclick="goToNextLevel()">Next Level</button>
 
     <!-- Optionally include the video stream for debugging, but hide it if not needed -->
     <img src="{{ url_for('video_feed') }}" alt="Video Feed" style="display: none;">
@@ -15,6 +56,38 @@
     </div>
 
     <script>
+        function updateExercise() {
+            fetch('/counter')
+            .then(response => response.json())
+            .then(data => {
+                let counter = data.counter;
+                let imgElement = document.getElementById('exerciseImage');
+                let progressBar = document.getElementById('progressBar');
+                let nextLevelButton = document.getElementById('nextLevelButton');
+                
+                // Update the image based on the counter value (0 to 5)
+                if (counter < 6) {
+                    imgElement.src = '/pizza_pics/knead' + counter + '.png';
+                    nextLevelButton.style.display = 'none';
+                } else {
+                    // When counter reaches 6, keep the final image and show the button
+                    imgElement.src = '/pizza_pics/knead5.png';
+                    nextLevelButton.style.display = 'block';
+                }
+                
+                // Calculate progress (ensure it never exceeds 100%)
+                let progressPercentage = Math.min((counter / 6) * 100, 100);
+                progressBar.style.width = progressPercentage + '%';
+                progressBar.innerText = counter + ' / 6';
+            })
+            .catch(error => console.error('Error fetching counter:', error));
+        }
+
+        function goToNextLevel() {
+            // Redirect to the next level route
+            window.location.href = '/next_level';
+        }
+        
         // Poll the /counter endpoint every second to update the counter display
         function updateCounter() {
             fetch('/counter')
