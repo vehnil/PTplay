@@ -8,8 +8,8 @@ from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
 class PracticeStudio:
-    def __init__(self, dataset_path, movement_type=0, rep_duration=4, rest_duration=2):
-        self.dataset_path = dataset_path
+    def __init__(self, movement_type=0, rep_duration=4, rest_duration=2):
+        self.dataset_path = "dataset/SkeletonData/RawData"
         self.movement_type = movement_type
         self.rep_duration = rep_duration
         self.rest_duration = rest_duration
@@ -29,7 +29,7 @@ class PracticeStudio:
         if self.movement_type == 1:
             self.desired_joints = ["ShoulderLeft", "ElbowLeft", "WristLeft"]
 
-            
+
         self.load_and_process_dataset()
 
     def __del__(self):
@@ -144,22 +144,47 @@ class PracticeStudio:
 
         return joints
     
+    def plot_movement_trajectory(self):
+        """Plots the expected movement trajectory for the selected movement type."""
+        if self.ground_truth_angles is None or len(self.ground_truth_angles) == 0:
+            raise ValueError("No ground truth data available for plotting.")
+
+        time_steps = np.linspace(0, 1, len(self.ground_truth_angles))
+
+        plt.figure(figsize=(10, 5))
+        plt.plot(time_steps, self.ground_truth_angles, label="Expected Joint Angle Progression", linewidth=2, color="b")
+        plt.xlabel("Time (seconds)")
+        plt.ylabel("Joint Angle (degrees)")
+
+        # Title based on movement type
+        movement_name = "Right Arm Movement" if self.movement_type == 1 else "Left Arm Movement"
+        plt.title(f"Expected {movement_name} Trajectory")
+        
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+
+    
     def get_frame(self):
         """Processes each frame with real-time feedback (time remaining, movement feedback, speed feedback)."""
         ret, frame = self.video.read()
         if not ret:
             return None
 
-        elapsed_time = time.time() - self.start_time
+        elapsed_time = time.time() - self.start_time  # ✅ Now correctly initialized
         cycle_time = self.rep_duration + self.rest_duration
         cycle_progress = elapsed_time % cycle_time
         is_resting = cycle_progress >= self.rep_duration
 
+        # Initialize variables
+        results = None
+        remaining_time_display = ""
+        movement_feedback = ""
+        speed_feedback = ""
+
         # Timer Display
         if is_resting:
             remaining_time_display = f"Rest... {max(0, self.rest_duration - (cycle_progress - self.rep_duration)):.1f}s"
-            movement_feedback = ""
-            speed_feedback = ""
         else:
             rep_progress = cycle_progress / self.rep_duration
             expected_angle = np.interp(rep_progress, np.linspace(0, 1, len(self.ground_truth_angles)), self.ground_truth_angles)
@@ -167,10 +192,11 @@ class PracticeStudio:
             movement_feedback = "Raise Your Arm!" if cycle_progress < self.rep_duration / 2 else "Lower Your Arm!"
             speed_feedback = ""
 
+            # ✅ Ensure `results` is always defined
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = self.pose.process(image)
 
-            if results.pose_landmarks:
+            if results and results.pose_landmarks:
                 joints = self.extract_mediapipe_joints(results.pose_landmarks)
                 if all(j in joints for j in self.desired_joints):
                     raw_angle = self.compute_angle(*[joints[joint] for joint in self.desired_joints])
@@ -188,66 +214,16 @@ class PracticeStudio:
         cv2.putText(frame, movement_feedback, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.putText(frame, speed_feedback, (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
 
-        if results.pose_landmarks:
+        if results and results.pose_landmarks:
             self.mp_drawing.draw_landmarks(frame, results.pose_landmarks, self.mp_pose.POSE_CONNECTIONS)
 
         # Encode the processed frame in JPEG format and return
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
-    def process_live_video(self):
-        """Processes live video and provides real-time feedback based on expected trajectory."""
-        cap = cv2.VideoCapture(0)
-        start_time = time.time()
-
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            elapsed_time = time.time() - start_time
-            cycle_time = self.rep_duration + self.rest_duration
-            cycle_progress = elapsed_time % cycle_time
-            is_resting = cycle_progress >= self.rep_duration
-
-            if is_resting:
-                remaining_time = f"Rest... {max(0, self.rest_duration - (cycle_progress - self.rep_duration)):.1f}s"
-                movement_feedback, speed_feedback = "", ""
-            else:
-                rep_progress = cycle_progress / self.rep_duration
-                expected_angle = np.interp(rep_progress, np.linspace(0, 1, len(self.ground_truth_angles)), self.ground_truth_angles)
-                remaining_time = f"Timer: {max(0, self.rep_duration - cycle_progress):.1f}s"
-
-                movement_feedback = "Raise Your Arm!" if cycle_progress < self.rep_duration / 2 else "Lower Your Arm!"
-                speed_feedback = ""
-
-                image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                results = self.pose.process(image)
-
-                if results.pose_landmarks:
-                    joints = self.extract_mediapipe_joints(results.pose_landmarks)
-                    if all(j in joints for j in self.desired_joints):
-                        raw_angle = self.compute_angle(*[joints[joint] for joint in self.desired_joints])
-                        calculated_angle = self.normalize_angle(raw_angle)
-                        if abs(calculated_angle - expected_angle) > 15:
-                            speed_feedback = "Slow Down!" if raw_angle > expected_angle else "Speed Up!"
-                        else:
-                            speed_feedback = "Good Form!"
-
-            cv2.putText(frame, remaining_time, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.putText(frame, movement_feedback, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            cv2.putText(frame, speed_feedback, (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
-
-            self.mp_drawing.draw_landmarks(frame, results.pose_landmarks, self.mp_pose.POSE_CONNECTIONS) if results.pose_landmarks else None
-
-            cv2.imshow("Live Feedback", frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-        cap.release()
-        cv2.destroyAllWindows()
-
 # Usage
 if __name__ == "__main__":
-    processor = PracticeStudio(dataset_path="dataset/SkeletonData/RawData", movement_type=1)
-    processor.get_frame()
+    processor = PracticeStudio(movement_type=1)
+    processor.plot_movement_trajectory()

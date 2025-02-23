@@ -97,8 +97,19 @@ def get_counter():
 def practicestudio():
     return render_template('practicestudio.html')
 
+@app.route('/leftcurl')
+def leftcurl():
+    return render_template('/leftcurl.html')
+
+@app.route('/rightcurl')
+def rightcurl():
+    global practice_camera
+    practice_camera = PracticeStudio(1)
+    return render_template('/rightcurl.html')
+
+
 @app.route('/practice_video_feed')
-def video_feed():
+def practice_video_feed():
     return Response(generate_frames(practice_camera),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
