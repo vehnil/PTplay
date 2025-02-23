@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Page - Pizza Pursuit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pico-main/css/pico.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Accent color */
+        :root {
+            --primary: #76a7c3;
+            scroll-behavior: smooth;
+        }
+
+        body, h1, h2, h3, p, button, a, nav {
+            text-transform: lowercase;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Pixel font */
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(118, 167, 195, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .navbar-left img {
+            height: 45px;
+            margin-right: 5px;
+        }
+
+        nav .navbar-right a {
+            margin-left: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav .navbar-right a:hover {
+            text-decoration: underline;
+        }
+
+        .button {
+            margin: 2rem 0;
+        }
+
+        /* Section styling */
+        section {
+            padding: 1rem 0;
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: 2rem;
+            border-radius: 1rem;
+            background-color: rgba(76, 124, 175, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Pixel-style button */
+        button, a.button {
+            background-color: var(--primary);
+            border: 3px solid #000;
+            border-radius: 0;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover, a.button:hover {
+            background-color: #5c8ca7;
+        }
+
+        /* Pixelated elements */
+        .pixel-border {
+            border: 4px solid #000;
+            border-radius: 0;
+        }
+
+        .info-box-logo {
+            display: block;
+            margin: 0 auto 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Typing animation */
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary);
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+            font-size: 2rem;
+            padding: 4rem 0 1rem 0;
+            text-align: center;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            50% { border-color: transparent; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="pixel-border">
+        <div class="navbar-left">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <span class="pixel-font">thera_pixel</span>
+        </div>
+        <div class="navbar-right">
+            <a href="/" class="pixel-font">games</a>
+            <a href="/data" class="pixel-font">data</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="container">
+        <h4 class="typing-text pixel-font">data: the heart of our project</h4>
+        <p class="pixel-font" style="text-align: center;">we use reliable data to evaluate movement in real time. here's how:</p>
+    </header>
+
+    <!-- Game Info Section -->
+    <section id="game-info" class="container">
+        <div class="info-box pixel-border">
+            <h2 class="pixel-font">overview</h2>
+            <p> our application primarily utilizes vectorization and visualiztion of real-time motion via computer vision with cv2 and mediapipe libraries. we also used the mdpi dataset, which is composed of spatial coordinates of various correct and incorrect movements typically performed in physical therapy settings. comparing our realtime data with this database allows us to offer realtime feedback to users.</p>
+            <p> we combine this backend with our front-end HTML using the flsk framework, which features our game design, created using pixel art, as well as our website design, which utilizes pico css.</p>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section class="container" id="game-materials">
+        <div class="grid">
+            <div class="info-box pixel-border">
+                <h4 class="pixel-font" style="color: #5c8ca7">Kaggle Data Set</h3>
+                <p>use us as your virtual therapy assistant, for times when leaving the house feels daunting.</p>
+                <a href="https://www.kaggle.com/datasets/rabieelkharoua/physical-therapy-exercises-dataset" class="pixel-font">check it out!</a>
+            </div>
+            <div class="info-box pixel-border">
+                <h4 class="pixel-font" style="color: #5c8ca7">MDPI Dataset</h3>
+                <p>get instantaneous feedback on form and speed and real-time reactions to movement.</p>
+                <a href="https://www.mdpi.com/2306-5729/6/5/46" class="pixel-font">check it out!</a>
+            </div>
+            <div class="info-box pixel-border">
+                <h4 class="pixel-font" style="color: #5c8ca7">Paper</h3>
+                <p>fun, pixel-art games that boost motivation, commitment and learning, incentivising therapy.</p>
+                <a href="https://www.mdpi.com/2306-5729/6/5/46" class="pixel-font">check it out!</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="container" id="data">
+        <div class="info-box pixel-border">
+            <h2 class="pixel-font">Our process</h2>
+            <p>Monitor your performance, track your improvements, and receive personalized feedback in real-time.</p>
+        </div>
+    </section>
+
+</body>
+</html>

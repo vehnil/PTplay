@@ -22,7 +22,7 @@ class Capture:
 
         self.mp_pose = mp.solutions.pose
         self.mp_drawing = mp.solutions.drawing_utils
-        self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+        self.pose = self.mp_pose.Pose(min_detection_confidence=0.6, min_tracking_confidence=0.5)
         self.mode = mode
 
         self.counter = 0
@@ -38,11 +38,20 @@ class Capture:
     def __del__(self):
         self.video.release()
 
-    def bicep_curls(self, angle: float, angle_r: float):
+    def bicep_curls(self, angle: float):
         # Curl counter logic for left arm (example)
         if angle > 160:
             self.stage = "down"
         if angle < 30 and self.stage == 'down':
+            self.stage = "up"
+            self.counter += 1
+            print("Rep Count:", self.counter)
+
+    def bicep_curls_r(self, angle_r: float):
+        # Curl counter logic for right arm (example)
+        if angle_r > 160:
+            self.stage = "down"
+        if angle_r < 30 and self.stage == 'down':
             self.stage = "up"
             self.counter += 1
             print("Rep Count:", self.counter)
@@ -98,6 +107,21 @@ class Capture:
         if angle_r > 130 and self.r_stage == 'up':
             self.r_stage = 'down'
             self.counter += 1  # Count when going from up → down
+
+    def detect_punch(self, angle: float, angle_r: float, wrist: float, wrist_r: float, elbow: float, elbow_r: float):
+        # Check if either arm is extended forward (angle < 30)
+        left_arm_extended = angle > 150 and wrist < elbow  # Left arm extended and wrist y > elbow y
+        right_arm_extended = angle_r > 150 and wrist_r < elbow_r  # Right arm extended and wrist y > elbow y
+
+        # Detect punch only when moving from 'down' to 'punch'
+        if self.stage == 'rest' and (left_arm_extended or right_arm_extended):
+            self.stage = 'punch'
+            self.counter += 1
+            print("Punch Detected! Rep Count:", self.counter)
+
+        # Reset to 'down' when both arms are no longer extended
+        elif not (left_arm_extended or right_arm_extended):
+            self.stage = 'rest'
 
     def get_frame(self):
         ret, frame = self.video.read()
@@ -156,7 +180,7 @@ class Capture:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
 
             if self.mode == 0:
-                self.bicep_curls(angle, angle_r)
+                self.bicep_curls(angle)
             elif self.mode == 1:
                 self.lat_raises(avg_shoulder_y, avg_wrist_y)
             elif self.mode == 2:
@@ -165,6 +189,10 @@ class Capture:
                 self.hooks()
             elif self.mode == 4:
                 self.slices(angle, angle_r)
+            elif self.mode == 5:
+                self.bicep_curls_r(angle_r)
+            elif self.mode == 6:
+                self.detect_punch(angle, angle_r, wrist[1], wrist_r[1], elbow[1], elbow_r[1])
 
         except Exception as e:
             # In case landmarks are not detected or any error occurs

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Page - Pizza Pursuit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pico-main/css/pico.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Accent color */
+        :root {
+            --primary: #76a7c3;
+            scroll-behavior: smooth;
+        }
+
+        body, h1, h2, h3, p, button, a, nav {
+            text-transform: lowercase;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Pixel font */
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(118, 167, 195, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .navbar-left img {
+            height: 45px;
+            margin-right: 5px;
+        }
+
+        nav .navbar-right a {
+            margin-left: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav .navbar-right a:hover {
+            text-decoration: underline;
+        }
+
+        .button {
+            margin: 2rem 0;
+        }
+
+        /* Section styling */
+        section {
+            padding: 1rem 0;
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: 2rem;
+            border-radius: 1rem;
+            background-color: rgba(76, 124, 175, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Pixel-style button */
+        button, a.button {
+            background-color: var(--primary);
+            border: 3px solid #000;
+            border-radius: 0;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover, a.button:hover {
+            background-color: #5c8ca7;
+        }
+
+        /* Pixelated elements */
+        .pixel-border {
+            border: 4px solid #000;
+            border-radius: 0;
+        }
+
+        .info-box-logo {
+            display: block;
+            margin: 0 auto 1rem;
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Typing animation */
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary);
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+            font-size: 2rem;
+            padding: 4rem 0 1rem 0;
+            text-align: center;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            50% { border-color: transparent; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="pixel-border">
+        <div class="navbar-left">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <span class="pixel-font">thera_pixel</span>
+        </div>
+        <div class="navbar-right">
+            <a href="/" class="pixel-font">games</a>
+            <a href="/data" class="pixel-font">data</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="container">
+        <h1 class="typing-text pixel-font">pizza pursuit: game for recovery</h1>
+        <p class="pixel-font" style="text-align: center;">"strengthen your arms, one slice at a time"</p>
+    </header>
+
+    <!-- Game Info Section -->
+    <section id="game-info" class="container">
+        <div class="info-box pixel-border">
+            <h2 class="pixel-font">game overview</h2>
+            <p>Pizza Pursuit is a fun and engaging game designed to help you exercise your arms, wrists, and shoulders. Perfect for those with upper-extremity pain, upper back pain, and light spasticity.</p>
+            <p>In this game, you'll move your arms to catch falling pizzas while engaging in therapeutic movements. Enjoy the challenge as you level up your skills and improve your rehabilitation progress.</p>
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section id="game-materials" class="container">
+        <div class="info-box pixel-border">
+            <h3 class="pixel-font">materials needed</h3>
+            <ul style="list-style-type: square;">
+                <li>Resistance band</li>
+                <li>5lb barbell weight</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Play Button Section -->
+    <section id="play-button" class="container">
+        <div class="button">
+            <a href="/kneadpizza" class="button">Play Pizza Pursuit</a>
+        </div>
+    </section>
+
+    <!-- Data Section -->
+    <section class="container" id="data">
+        <div class="info-box pixel-border">
+            <h2 class="pixel-font">track your progress</h2>
+            <p>Monitor your performance, track your improvements, and receive personalized feedback in real-time.</p>
+        </div>
+    </section>
+
+</body>
+</html>

@@ -158,7 +158,7 @@
         </div>
         <div class="navbar-right">
             <a href="#games" class="pixel-font">games</a>
-            <a href="#data" class="pixel-font">data</a>
+            <a href="/data" class="pixel-font">data</a>
         </div>
     </nav>
 
@@ -225,7 +225,7 @@
                 <!-- Image Below the Description -->
                 <img src="{{ url_for('static', filename='images/cut6.png') }}" alt="Game 1 Image" style="width: 100%; height: 550px; object-fit: cover; object-position: bottom; border-radius: 1rem; margin-top: 1rem; margin-bottom: 0px;">
 
-                <a href="/kneadpizza" style="display: inline-block; width: 100%; margin-top: 1rem; padding: 0.5rem 1rem; background-color: #5c8ca7; color: white; text-align: center; border-radius: 1rem; text-decoration: none;">
+                <a href="/pizzagame" style="display: inline-block; width: 100%; margin-top: 1rem; padding: 0.5rem 1rem; background-color: #5c8ca7; color: white; text-align: center; border-radius: 1rem; text-decoration: none;">
                     Play!
                 </a>
             </div>
@@ -235,14 +235,19 @@
                 <!-- Logo to the Left of the Header -->
                 <div style="display: flex; align-items: center; margin-bottom: 1rem;">
                     <br>
-                    <h4 class="pixel-font" style="color: #5c8ca7">Game 2</h4>
+                    <h4 class="pixel-font" style="color: #5c8ca7">Practice Studio</h4>
                 </div>
                 <!-- Description Below the Header -->
-                <p>Game 2 description goes here. It helps with movement A and rehabilitation B.</p>
-                <!-- Image Below the Description -->
-                <img src="{{ url_for('static', filename='images/eat3.png') }}" alt="Game 1 Image" style="width: 100%; height: 550px; object-fit: cover; object-position: bottom; border-radius: 1rem; margin-top: 1rem">
-
-                <a href="/kneadpizza" style="display: inline-block; width: 100%; margin-top: 1rem; padding: 0.5rem 1rem; background-color: #5c8ca7; color: white; text-align: center; border-radius: 1rem; text-decoration: none;">
+                <p>practice your form and get instantaneous feedback on your speed and motion as you practice. gain relevant insights on your performance and progress as you go.</p>
+                <p>we currently offer practice studio for bicep curls and are working to get a more extensive suite out soon.</p>
+                <p>we use real-time data analysis to provide instant feedback. we protect user data and do not store any data beyond your practice session.</p>
+            
+                <!-- Image Centered -->
+                <div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
+                    <img src="{{ url_for('static', filename='images/vehnil.png') }}" alt="Game 1 Image" style="width: 90%; height: auto; object-fit: contain;">
+                </div>
+            
+                <a href="/practicestudio" style="display: inline-block; width: 100%; margin-top: 10px; padding: 0.5rem 1rem; background-color: #5c8ca7; color: white; text-align: center; border-radius: 1rem; text-decoration: none;">
                     Play!
                 </a>
             </div>
@@ -255,6 +260,10 @@
             <h2 class="pixel-font">data insights</h2>
             <p>analyze progress, identify trends, and optimize recovery using meaningful data.</p>
             <p>we use reliable data sources and machine learning algorithms to provide real-time personalized feedback during every game and session. visit our data page for more information.</p>
+            <br>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="/data" class="button">learn more</a>
+            </div>
         </div>
     </section>
 
