@@ -102,8 +102,8 @@
         .info-box-logo {
             display: block;
             margin: 0 auto 1rem;
-            width: 100px;
-            height: 100px;
+            width: 300px;
+            height: 300px;
         }
 
         /* Typing animation */
@@ -145,41 +145,47 @@
 
     <!-- Hero Section -->
     <header class="container">
-        <h1 class="typing-text pixel-font">pizza pursuit: game for recovery</h1>
-        <p class="pixel-font" style="text-align: center;">"strengthen your arms, one slice at a time"</p>
+        <h4 class="typing-text pixel-font">design: what makes us unique</h4>
+        <p class="pixel-font" style="text-align: center;">we combine simplicity and minimalism with fun and games.</p>
     </header>
 
     <!-- Game Info Section -->
     <section id="game-info" class="container">
         <div class="info-box pixel-border">
-            <h2 class="pixel-font">game overview</h2>
-            <p>Pizza Pursuit is a fun and engaging game designed to help you exercise your arms, wrists, and shoulders. Perfect for those with upper-extremity pain, upper back pain, and light spasticity.</p>
-            <p>In this game, you'll move your arms to catch falling pizzas while engaging in therapeutic movements. Enjoy the challenge as you level up your skills and improve your rehabilitation progress.</p>
+            <h2 class="pixel-font">overview</h2>
+            <p> design is at the core of thera_pixel, setting us apart as a therapy option that’s not only effective but also enjoyable—especially for children. by incorporating playful visuals, interactive elements, and game-like experiences, we create an environment that encourages users to actively participate in their therapy sessions.</p>
+            <p> this thoughtful design not only captures attention but also sustains it, turning repetitive physical therapy exercises into fun challenges. over time, this engagement boosts user retention, making it more likely for patients to consistently follow through with their rehabilitation journeys.</p>
         </div>
     </section>
 
-    <!-- Materials Section -->
-    <section id="game-materials" class="container">
-        <div class="info-box pixel-border">
-            <h3 class="pixel-font">materials needed</h3>
-            <ul style="list-style-type: square;">
-                <li>Resistance band</li>
-                <li>5lb barbell weight</li>
-            </ul>
+    <!-- Resources Section -->
+    <section class="container" id="game-materials">
+        <div class="grid">
+            <div class="info-box pixel-border">
+                <h4 class="pixel-font" style="color: #5c8ca7">Pixel Art</h4>
+                <img src="{{ url_for('static', filename='images/pixelstuff.png') }}" alt="Logo 1" class="info-box-logo">
+                <p> all of our game graphics are made authentically by us with a pixel art tool, which allows us to color pixel-by-pixel. we chose this design since it is simple to put together and transition from frame to frame throughout the game. this was our first time making a game, and we thought this made the graphics relatively easy!</p>
+                <a href="https://www.pixilart.com/draw?ref=home-page#" class="pixel-font">check it out!</a>
+            </div>
+            <div class="info-box pixel-border">
+                <h4 class="pixel-font" style="color: #5c8ca7">Pico CSS</h3>
+                <p>pico CSS is a minimal, lightweight CSS framework that offers a clean and modern design without relying on heavy libraries or complex class names. we chose Pico CSS for our web design because it provides a sleek, user-friendly interface while keeping the codebase simple and efficient, allowing us to focus on creating an engaging and accessible experience for users of all ages.</p>
+                <p> we also added various animations and transitions using css. we imported fonts from google's font collection and took time to choose a pallete of taseteful and minimal colors and fonts.</p>
+                <a href="https://picocss.com/docs" class="pixel-font">check it out!</a>
+            </div>
+            <div class="info-box pixel-border">
+                <h4 class="pixel-font" style="color: #5c8ca7">joint and connection visualization</h4>
+                <img src="{{ url_for('static', filename='images/connects.png') }}" alt="Logo 1" class="info-box-logo">
+                <p>we decided to keep a camera window open next to each game to allow users to see their form. we color coded and highlighted certain joints and connections between joints to visualize where one's limbs are in the computer's vision. we did this using mediapipe.</p>
+                <a href="https://ai.google.dev/edge/mediapipe/solutions/guide" class="pixel-font">check it out!</a>
+            </div>
         </div>
     </section>
 
-    <!-- Play Button Section -->
-    <section id="play-button" class="container">
-        <div class="button">
-            <a href="/kneadpizza" class="button">Play Pizza Pursuit</a>
-        </div>
-    </section>
-
-    <!-- Data Section -->
+    <!-- Process Section -->
     <section class="container" id="data">
         <div class="info-box pixel-border">
-            <h2 class="pixel-font">track your progress</h2>
+            <h2 class="pixel-font">Our process</h2>
             <p>Monitor your performance, track your improvements, and receive personalized feedback in real-time.</p>
         </div>
     </section>

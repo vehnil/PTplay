@@ -76,6 +76,10 @@ def data():
 def practicestudio():
     return render_template('practicestudio.html')
 
+@app.route('/design')
+def design():
+    return render_template('design.html')
+
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(camera),
