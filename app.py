@@ -72,6 +72,10 @@ def pizzastart():
 def data():
     return render_template('data.html')
 
+@app.route('/practicestudio')
+def practicestudio():
+    return render_template('practicestudio.html')
+
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(camera),
