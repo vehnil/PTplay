@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Game Page - Pizza Pursuit</title>
+    <title>thera_pixel: our data</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
 
@@ -102,8 +102,9 @@
         .info-box-logo {
             display: block;
             margin: 0 auto 1rem;
-            width: 100px;
-            height: 100px;
+            width: auto;
+            height: 300px;
+            max-width: 100%;
         }
 
         /* Typing animation */
@@ -130,6 +131,24 @@
         @keyframes glow {
             from { text-shadow: 0 0 10px #76a7c3, 0 0 20px #76a7c3; }
             to { text-shadow: 0 0 20px #5c8ca7, 0 0 30px #5c8ca7; }
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Container for the graph (image) */
+        .graph-container {
+            flex: 1;
+            margin-right: 5px; /* Space between the graph and description */
+        }
+
+        /* Container for the description text */
+        .description-container {
+            flex: 2; /* Adjust flex value to give more space for the text */
+            padding-left: 25px;
         }
 
     </style>
@@ -175,11 +194,11 @@
             <div class="info-box pixel-border">
                 <h4 class="pixel-font" style="color: #5c8ca7">MDPI Dataset</h3>
                 <p>the MDPI dataset contains detailed x, y, z coordinate data from various physical therapy exercises, enabling precise motion tracking and analysis. we used this dataset to compare users' real-time movements with prerecorded spatial coordinates, allowing for accurate form assessment and targeted feedback in our practice studio. this comparison helps users align their movements with ideal therapy standards, enhancing their rehabilitation process.</p>
-                <a href="https://www.mdpi.com/2306-5729/6/5/46" class="pixel-font">check it out!</a>
+                <a href="https://zenodo.org/records/4610859" class="pixel-font">check it out!</a>
             </div>
             <div class="info-box pixel-border">
                 <h4 class="pixel-font" style="color: #5c8ca7">Paper</h3>
-                <p>fun, pixel-art games that boost motivation, commitment and learning, incentivising therapy.</p>
+                <p> this paper, part of Measurements of User and Sensor Data from the Internet of Things (IoT) Devices, details the specifics of the mdpi dataset that we used. it goes through the different metrics that are a part of teh dataset, how they were tracked, and what kind of regression/analysis can be done on them. this was helpful for us to look trhough and refer to when learning to implement time-series interpolation.</p>
                 <a href="https://www.mdpi.com/2306-5729/6/5/46" class="pixel-font">check it out!</a>
             </div>
         </div>
@@ -189,7 +208,45 @@
     <section class="container" id="data">
         <div class="info-box pixel-border">
             <h2 class="pixel-font">Our process</h2>
-            <p>Monitor your performance, track your improvements, and receive personalized feedback in real-time.</p>
+            <p>this was our first time ever working with computer vision and data interpolation with video data. from watching videos on repeat on how to use cv2, to taking hours trying to understand the format of the mdpi database, we definitely had a huge learning curve with this project and are excited about how far we have come in just 36 hours.</p>
+            <p>in terms of data, we learned and used the following tools and techniques:</p>
+            <ul style="list-style-type: square;">
+                <li>data collection and parsing</li>
+                <li>data pre-processing and cleaning</li>
+                <li>time-series interpolation</li>
+                <li>data visualization and graphing</li>
+                <li>real-time data analysis</li>
+            </ul>
+            <p>the biggest challenge we faced was figuring out how to correlate trends in the data we parsed and analyzed from the mdpi dataset to realtime data to provide user feedback.</p>
+            <br>
+            <!-- Add a flex container to align images and description -->
+            <div class="flex-container">
+                <!-- Image 1 (Graph) on the left -->
+                <div class="graph-container">
+                    <img src="{{ url_for('static', filename='images/leftcurl.png') }}" alt="Graph 1" class="info-box-logo">
+                </div>
+                
+                <!-- Description text on the right -->
+                <div class="description-container">
+                    <p>we started by taking all spatial point (x,y,z) data from videos in the dataset that represented correctly performed physical therapy movements. however, we realized that these instances had different numbers of frames, so taking an average was not easy. thus, we first computed the angle between the sholder, elbow, and wrist connection lines, before normalizing this data and then averaging these values over each timestep. this gave us the graphs shown to the left for each movement.</p>
+                </div>
+            </div>
+            
+            <!-- Repeat the same structure for the second graph -->
+            <div class="flex-container">
+                <!-- Image 2 (Graph) on the left -->
+                <div class="graph-container">
+                    <img src="{{ url_for('static', filename='images/rightcurl.png') }}" alt="Graph 2" class="info-box-logo">
+                </div>
+                
+                <!-- Description text on the right -->
+                <div class="description-container">
+                    <p>after the aggregation of data, we set off to figure out how we can collect real-time data from the user through our front-end flask application and the mediapipe library. initially, we found that the user feedback would update nerly every half second, making it impossible for the user to read and follow the instructions. we realized it was very difficult to do real-time analysis when the length of time for each rep done by the user was unknown. after hours of debugging and deliberation, including measuring progress by change of angle and using graph regression, we were stumped.</p>
+                </div>
+            </div>
+            <p>we eventually came up with the idea to incorporate a timer telling the user when to start a given motion, then give feedback on pacing, as at each clock cycle, the angle of the user's arm is compared to the expected angle according to the data at a time t after the timer starts. this seemed to work relatively well, as we were able to set it to a pace that is easy to follow along with and analyze in real time.</p>
+            <p>check out our real-time feedback system: </p>
+            <a href="/practicestudio" class="pixel-font">thera_pixel's practice studio</a>
         </div>
     </section>
 
