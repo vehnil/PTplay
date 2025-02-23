@@ -82,6 +82,7 @@
             font-size: 2.5rem;
             padding: 4rem 0 1rem 0;
             text-align: center;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite, glow 2s infinite alternate;
         }
 
         @keyframes typing {
@@ -146,6 +147,21 @@
             width: 100px; /* Adjust the size of the logos */
             height: 100px; /* Ensure the logos have consistent height */
         }
+
+        .info-box-logo:hover {
+            animation: spin 0.8s ease-in-out;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #76a7c3, 0 0 20px #76a7c3; }
+            to { text-shadow: 0 0 20px #5c8ca7, 0 0 30px #5c8ca7; }
+        }
+
     </style>
 </head>
 <body>
