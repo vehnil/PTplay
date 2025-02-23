@@ -75,6 +75,10 @@ def data():
     return render_template('data.html')
 
 
+@app.route('/design')
+def design():
+    return render_template('design.html')
+
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(camera),
