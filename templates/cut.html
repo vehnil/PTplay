@@ -2,102 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Gamified Physical Therapy</title>
+    <title>Pizza Pursuit</title>
+    <meta name="color-scheme" content="light dark">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/pizzalogo.png') }}" type="image/png">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pico-main/css/pico.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         #outerContainer {
-        display: flex;
-        height: 100vh;
+            display: flex;
+            height: calc(100vh - 60px); /* Adjusting for navbar height */
+            background-color: rgba(118, 167, 195, 0.1);
+            border: 4px solid #000;
+            border-radius: 0;
         }
         /* Left container holds the exercise image */
         #leftContainer {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: #fafafa;
+            flex: 6; /* 70% width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(118, 167, 195, 0.1);
         }
         /* Right container is split vertically */
         #rightContainer {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+            flex: 4; /* 30% width */
+            display: flex;
+            flex-direction: column;
         }
         /* Top half of the right side for the video feed */
         #videoContainer {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #eaeaea;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #000;
+            border-radius: 0;
+            background-color: rgba(118, 167, 195, 0.1);
         }
         /* Bottom half for instructions, progress, and button */
         #bottomRight {
-        flex: 1;
-        padding: 20px;
-        box-sizing: border-box;
-        background-color: #f0f0f0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            border: 4px solid #000;
+            border-radius: 0;
+            background-color: rgba(118, 167, 195, 0.1);
         }
         /* Styling for the exercise image on the left */
         #exerciseImage {
-        max-width: 90%;
-        max-height: 90%;
-        border: 1px solid #ccc;
+            max-width: 100%;
         }
         /* Video feed styling */
         #videoFeed {
-        width: 100%;
-        height: auto;
-        border: 1px solid #ccc;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
         }
         /* Progress bar container */
         #progressContainer {
-        width: 100%;
-        background-color: #ddd;
-        margin-top: 20px;
-        height: 30px;
-        border-radius: 5px;
-        overflow: hidden;
-        }
-            /* Progress bar container */
-        #progressContainer {
-            width: 640px;
+            width: 100%;
             background-color: #ddd;
             margin-top: 20px;
             height: 30px;
             border-radius: 5px;
             overflow: hidden;
         }
-            /* Progress bar fill */
+        /* Progress bar fill */
         #progressBar {
             width: 0%;
             height: 100%;
-            background-color: #4CAF50;
+            background-color: #4c8eaf;
             text-align: center;
             line-height: 30px;
             color: white;
             transition: width 0.5s ease;
         }
-            /* Hide the button by default */
-        #nextLevelButton {
-            display: none;
-            margin-top: 20px;
+
+        /* Hide the button by default */
+        #nextLevelButton, #backToLandingButton {
+            font-family: 'Press Start 2P', cursive;
             font-size: 1.2em;
             padding: 10px 20px;
+            margin-top: 20px;
+            border: 2px solid #000;
+            background-color: #4c8eaf;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        /* Button hover effect */
+        #nextLevelButton:hover, #backToLandingButton:hover {
+            background-color: #45a049;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between; /* This places the logo and links on opposite sides */
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(118, 167, 195, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Navbar logo and text */
+        nav .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .navbar-left img {
+            height: 45px;
+            margin-right: 5px;
+        }
+
+        nav .navbar-left .pixel-font {
+            font-size: 1rem; /* Adjust font size if necessary */
+        }
+
+        /* Navbar links (games, data) */
+        nav .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .navbar-right a {
+            margin-left: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav .navbar-right a:hover {
+            text-decoration: underline;
+        }
+
+        .pixel-border {
+            border: 4px solid #000;
+            border-radius: 0;
+        }
+
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        #instructionsBox {
+            font-family: 'Space Mono', monospace;
+            color: #333;
+            font-size: 1em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Ensure text in the right panel has consistent pixel font styling */
+        #counterDisplay {
+            font-family: 'Space Mono', monospace;
+            font-size: 2em;
+            color: #333;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Physical Therapy Dashboard</h1>
+    <!-- Navbar -->
+    <nav class="pixel-border">
+        <div class="navbar-left">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <span class="pixel-font">thera_pixel</span>
+        </div>
+        <div class="navbar-right">
+            <a href="/" class="pixel-font">games</a>
+            <a href="/data" class="pixel-font">data</a>
+        </div>
+    </nav>
 
     <div id="outerContainer">
         <!-- Left side: Exercise Image -->
         <div id="leftContainer">
-          <h2>Exercise Image</h2>
           <img id="exerciseImage" src="{{ url_for('static', filename='images/cut0.png') }}" alt="Exercise Step">
         </div>
         <!-- Right side: Video feed on top, instructions & progress on bottom -->
@@ -107,17 +198,19 @@
           </div>
           <div id="bottomRight">
             <div id="instructionsBox">
-              <p>Follow the on-screen instructions and watch your video feedback. Complete the exercise to advance.</p>
+              <p>follow the on-screen instructions and watch your video feedback. complete the exercise to advance.</p>
+            </div>
+            <div id="instructionsBox">
+                <p>time to cut out pizza! extend your arms and move your hands from up to down, kinda like scissors!</p>
             </div>
             <div id="progressContainer">
-              <div id="progressBar">0 / 6</div>
+              <div id="progressBar">0 / 15</div>
             </div>
             <button id="nextLevelButton" onclick="goToNextLevel()">Next Level</button>
             <div id="counterDisplay" style="font-size: 2em; margin-top: 20px;">
               Counter: 0
             </div>
           </div>
-          <button onclick="window.location.href='/'">Back to Landing</button>
         </div>
     </div>
 
@@ -141,9 +234,9 @@
                     counterDisplay.innerText = "Counter: " + counter;
 
                     // Update the image based on the counter value (0 to 5)
-                    if (counter < 6) {
+                    if (counter < 15) {
                         // Use the baseUrl generated by url_for and append the counter and file extension
-                        imgElement.src = baseUrl + counter + '.png';
+                        imgElement.src = baseUrl + Math.floor(counter/3) + '.png';
                         nextLevelButton.style.display = 'none';
                     } else {
                         // When counter reaches 6, keep the final image and show the button
@@ -152,9 +245,9 @@
                     }
 
                     // Calculate progress (ensure it never exceeds 100%)
-                    let progressPercentage = Math.min((counter / 6) * 100, 100);
+                    let progressPercentage = Math.min((counter / 15) * 100, 100);
                     progressBar.style.width = progressPercentage + '%';
-                    progressBar.innerText = counter + ' / 6';
+                    progressBar.innerText = counter + ' / 15';
                 })
                 .catch(error => console.error('Error fetching counter:', error));
         }

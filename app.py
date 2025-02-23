@@ -43,13 +43,13 @@ def cheese():
 @app.route('/toppizza')
 def toppings():
     global camera
-    camera = Capture(0)
+    camera = Capture(5)
     return render_template('toppings.html')
 
 @app.route('/cookpizza')
 def oven():
     global camera
-    camera = Capture(0)
+    camera = Capture(6)
     return render_template('oven.html')
 
 @app.route('/cutpizza')
@@ -61,8 +61,16 @@ def cut():
 @app.route('/eatpizza')
 def eat():
     global camera
-    camera = Capture(0)
+    camera = Capture(1)
     return render_template('eat.html')
+
+@app.route('/pizzagame')
+def pizzastart():
+    return render_template('pizzastart.html')
+
+@app.route('/data')
+def data():
+    return render_template('data.html')
 
 @app.route('/video_feed')
 def video_feed():
