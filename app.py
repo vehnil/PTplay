@@ -1,8 +1,10 @@
 from flask import Flask, render_template, Response, jsonify
 from capture import Capture
+from PracticeStudio import PracticeStudio
 
 app = Flask(__name__)
 camera = Capture(0)
+practice_camera = PracticeStudio(0)
 
 def generate_frames(camera):
     while True:
@@ -72,9 +74,6 @@ def pizzastart():
 def data():
     return render_template('data.html')
 
-@app.route('/practicestudio')
-def practicestudio():
-    return render_template('practicestudio.html')
 
 @app.route('/design')
 def design():
@@ -93,6 +92,15 @@ def reset_counter():
 @app.route('/counter')
 def get_counter():
     return jsonify(counter=camera.counter)
+
+@app.route('/practicestudio')
+def practicestudio():
+    return render_template('practicestudio.html')
+
+@app.route('/practice_video_feed')
+def video_feed():
+    return Response(generate_frames(practice_camera),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
