@@ -1,12 +1,285 @@
-<!-- templates/landing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Landing Page</title>
+    <title>landing page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pico-main/css/pico.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Accent color */
+        :root {
+            --primary: #76a7c3;
+            scroll-behavior: smooth;
+        }
+
+        /* Lowercase all text */
+        body, h1, h2, h3, p, button, a, nav {
+            text-transform: lowercase;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Pixel font */
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between; /* This places the logo and links on opposite sides */
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(118, 167, 195, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Navbar logo and text */
+        nav .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .navbar-left img {
+            height: 45px;
+            margin-right: 5px;
+        }
+
+        nav .navbar-left .pixel-font {
+            font-size: 1rem; /* Adjust font size if necessary */
+        }
+
+        /* Navbar links (games, data) */
+        nav .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .navbar-right a {
+            margin-left: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav .navbar-right a:hover {
+            text-decoration: underline;
+        }
+
+        /* Typing animation */
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary);
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+            font-size: 2.5rem;
+            padding: 4rem 0 1rem 0;
+            text-align: center;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            50% { border-color: transparent; }
+        }
+
+        /* Section styling */
+        section {
+            padding: 1rem 0;
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: 2rem;
+            border-radius: 1rem;
+            background-color: rgba(76, 124, 175, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Pixel-style button */
+        button, a.button {
+            background-color: var(--primary);
+            border: 3px solid #000;
+            border-radius: 0;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover, a.button:hover {
+            background-color: #5c8ca7;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* Pixelated elements */
+        .pixel-border {
+            border: 4px solid #000;
+            border-radius: 0;
+        }
+        .button {
+            margin: 2rem 0; /* Add space above and below the button */
+        }
+
+        .info-box-logo {
+            display: block; /* Makes the image block-level */
+            margin: 0 auto 1rem; /* Centers the image and adds space below */
+            width: 100px; /* Adjust the size of the logos */
+            height: 100px; /* Ensure the logos have consistent height */
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Landing Page</h1>
-    <button onclick="window.location.href='/kneadpizza'">Go to Main Page</button>
+
+    <!-- Navbar -->
+    <nav class="pixel-border">
+        <div class="navbar-left">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <span class="pixel-font">thera_pixel</span>
+        </div>
+        <div class="navbar-right">
+            <a href="#games" class="pixel-font">games</a>
+            <a href="#data" class="pixel-font">data</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="container">
+        <h1 class="typing-text pixel-font">empowering remote rehab</h1>
+        <p class="pixel-font" style="text-align: center;">"healing one pixel at a time"</p>
+        <div style="text-align: center; margin-top: 1rem;">
+            <a href="#mission" class="button">learn more</a>
+        </div>
+    </header>
+
+    <!-- Mission Section -->
+    <section id="mission" class="container">
+        <br>
+        <div class="info-box pixel-border">
+            <h2 class="pixel-font">our mission</h2>
+            <p> At thera_pixel, we believe that physical therapy should be more than just repetitive movements—it should be engaging, motivating, and accessible to everyone, everywhere. Our mission is to <span style="color: #76a7c3;">transform the traditional rehabilitation experience</span> by merging evidence-based physical therapy with the excitement of gaming. </p>
+            <p>We create interactive, pixel-art games designed specifically to help patients practice the form, pacing, and repetitions of their prescribed exercises. By turning therapy into a game, we make recovery not only more enjoyable but also more effective. Our platform encourages patients to stay <span style="color: #76a7c3;">consistent, motivated, and mindful of their progress,</span> all while following proper techniques critical for healing.</p>
+            <p>Through data-driven insights and personalized feedback, therapists can <span style="color: #76a7c3;">track patient improvements in real time, adjust routines, and ensure that each individual stays on the right path to recovery</span>. Whether you're rehabbing at home, in the clinic, or on the go, thera_pixel empowers you to take control of your healing journey—one pixel at a time. Because recovery shouldn't feel like a chore—it should feel like leveling up. </p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container" id="games">
+        <div class="grid">
+            <div class="info-box pixel-border">
+                <img src="{{ url_for('static', filename='images/heartlogo.png') }}" alt="Logo 1" class="info-box-logo">
+                <h4 class="pixel-font" style="color: #5c8ca7">remote rehab.</h3>
+                <p>use us as your virtual therapy assistant, for times when leaving the house feels daunting.</p>
+            </div>
+            <div class="info-box pixel-border">
+                <img src="{{ url_for('static', filename='images/maillogo.png') }}" alt="Logo 2" class="info-box-logo">
+                <h4 class="pixel-font" style="color: #5c8ca7">real-time feedback.</h3>
+                <p>get instantaneous feedback on form and speed and real-time reactions to movement.</p>
+            </div>
+            <div class="info-box pixel-border">
+                <img src="{{ url_for('static', filename='images/checklogo.png') }}" alt="Logo 3" class="info-box-logo">
+                <h4 class="pixel-font" style="color: #5c8ca7">gamification.</h3>
+                <p>fun, pixel-art games that boost motivation, commitment and learning, incentivising therapy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="container" id="games-section">
+        <div class="grid" style="display: flex; justify-content: space-between; gap: 1rem;">
+            <!-- Game 1 Box -->
+            <div class="info-box pixel-border" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; padding: 1rem;">
+                <!-- Logo to the Left of the Header -->
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <br>
+                    <h4 class="pixel-font" style="color: #5c8ca7">Pizza Pursuit</h4>
+                </div>
+                <!-- Description Below the Header -->
+                <p>a game to stretch and exercise your arms, wrists, and shoulders. recommended for those with upper-extremity pain, upper back pain, and light spasticity. materials recommended include:</p>
+                
+                <!-- Materials List -->
+                <ul style="list-style-type: square;">
+                    <li>resistance band</li>
+                    <li>5lb barbell weight</li>
+                </ul>
+                
+                <!-- Image Below the Description -->
+                <img src="{{ url_for('static', filename='images/cut6.png') }}" alt="Game 1 Image" style="width: 100%; height: 550px; object-fit: cover; object-position: bottom; border-radius: 1rem; margin-top: 1rem; margin-bottom: 0px;">
+
+                <a href="/kneadpizza" style="display: inline-block; width: 100%; margin-top: 1rem; padding: 0.5rem 1rem; background-color: #5c8ca7; color: white; text-align: center; border-radius: 1rem; text-decoration: none;">
+                    Play!
+                </a>
+            </div>
+    
+            <!-- Game 2 Box -->
+            <div class="info-box pixel-border" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; padding: 1rem;">
+                <!-- Logo to the Left of the Header -->
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <br>
+                    <h4 class="pixel-font" style="color: #5c8ca7">Game 2</h4>
+                </div>
+                <!-- Description Below the Header -->
+                <p>Game 2 description goes here. It helps with movement A and rehabilitation B.</p>
+                <!-- Image Below the Description -->
+                <img src="{{ url_for('static', filename='images/eat3.png') }}" alt="Game 1 Image" style="width: 100%; height: 550px; object-fit: cover; object-position: bottom; border-radius: 1rem; margin-top: 1rem">
+
+                <a href="/kneadpizza" style="display: inline-block; width: 100%; margin-top: 1rem; padding: 0.5rem 1rem; background-color: #5c8ca7; color: white; text-align: center; border-radius: 1rem; text-decoration: none;">
+                    Play!
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Section -->
+    <section class="container" id="data">
+        <div class="info-box pixel-border">
+            <h2 class="pixel-font">data insights</h2>
+            <p>analyze progress, identify trends, and optimize recovery using meaningful data.</p>
+            <p>we use reliable data sources and machine learning algorithms to provide real-time personalized feedback during every game and session. visit our data page for more information.</p>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="container">
+        <h3 class="pixel-font">ready to join our waitlist?</h3>
+        <form action="https://formspree.io/f/movjzalj" method="POST">
+            <div style="display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem;">
+                <div style="flex: 1;">
+                    <label for="name" class="pixel-font">Name:</label>
+                    <input type="text" id="name" name="name" style="font-family: 'Space Mono', monospace; width: 100%;" required>
+                </div>
+                <div style="flex: 1;">
+                    <label for="email" class="pixel-font">Email:</label>
+                    <input type="email" id="email" name="email" style="font-family: 'Space Mono', monospace; width: 100%;" required>
+                </div>
+            </div>
+    
+            <div style="margin-bottom: 1rem;">
+                <label for="message" class="pixel-font">Message:</label>
+                <textarea id="message" name="message" style="font-family: 'Space Mono', monospace; width: 100%;" required></textarea>
+            </div>
+    
+            <button type="submit" class="button">Join Waitlist</button>
+        </form>
+    </section>
 </body>
 </html>
