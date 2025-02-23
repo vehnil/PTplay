@@ -115,6 +115,7 @@
             font-size: 2rem;
             padding: 4rem 0 1rem 0;
             text-align: center;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite, glow 2s infinite alternate;
         }
 
         @keyframes typing {
@@ -124,6 +125,11 @@
 
         @keyframes blink-caret {
             50% { border-color: transparent; }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #76a7c3, 0 0 20px #76a7c3; }
+            to { text-shadow: 0 0 20px #5c8ca7, 0 0 30px #5c8ca7; }
         }
 
     </style>
@@ -185,8 +191,8 @@
     <!-- Process Section -->
     <section class="container" id="data">
         <div class="info-box pixel-border">
-            <h2 class="pixel-font">Our process</h2>
-            <p>Monitor your performance, track your improvements, and receive personalized feedback in real-time.</p>
+            <h2 class="pixel-font">our goals</h2>
+            <p>we hope to design more complicated and competitive games, experimenting how different game elements and point systems may affect how users react differently. for this hackathon, we chose to build a pizza game, but in the coming future, we hope to expand to a suite of games for people with different impairments, ages, and interests.</p>
         </div>
     </section>
 
