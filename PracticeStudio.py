@@ -28,7 +28,10 @@ class PracticeStudio:
             self.desired_joints = ["ShoulderRight", "ElbowRight", "WristRight"]
         if self.movement_type == 1:
             self.desired_joints = ["ShoulderLeft", "ElbowLeft", "WristLeft"]
-
+        if self.movement_type == 4:
+            self.desired_joints = ["ShoulderLeft", "ShoulderRight", "ElbowRight"]
+        if self.movement_type == 5:
+            self.desired_joints = ["ShoulderRight", "ShoulderLeft", "ElbowLeft"]
 
         self.load_and_process_dataset()
 
@@ -54,9 +57,12 @@ class PracticeStudio:
             if len(parts) < 6 or parts[2] != str(movement_type) or parts[4][0] != '2':
                 continue
             file_path = os.path.join(folder_path, file)
-            dataset[file] = self.clean_and_parse_intellirehab_csv(file_path)
+            joint_positions = self.clean_and_parse_intellirehab_csv(file_path)
+            if len(joint_positions) < 10:
+                continue
+            dataset[file] = joint_positions
 
-        print(f"Loaded {len(dataset)} files: {list(dataset.keys())}")
+        # print(f"Loaded {len(dataset)} files: {list(dataset.keys())}")
         return dataset
 
     def clean_and_parse_intellirehab_csv(self, file_path):
@@ -89,11 +95,11 @@ class PracticeStudio:
                 if not all(j in joints for j in self.desired_joints):
                     continue
 
-                shoulder, elbow, wrist = [joints[joint] for joint in self.desired_joints]
-                angle = self.compute_angle(shoulder, elbow, wrist)
+                joint1, joint2, joint3 = [joints[joint] for joint in self.desired_joints]
+                angle = self.compute_angle(joint1, joint2, joint3)
                 angles.append(angle)
 
-            if angles:
+            if angles and len(angles) > 10:
                 all_angles.append(self.normalize_time_series(angles))  # Ensure non-empty lists
 
         if not all_angles:
@@ -114,6 +120,8 @@ class PracticeStudio:
 
     def normalize_time_series(self, data, num_points=100):
         """Resamples a variable-length series to a fixed-length using interpolation."""
+        print("hi", len(data))
+        print(data)
         x_old = np.linspace(0, 1, len(data))
         x_new = np.linspace(0, 1, num_points)
         interpolator = interp1d(x_old, data, kind='linear')
@@ -136,6 +144,10 @@ class PracticeStudio:
             indices = [self.mp_pose.PoseLandmark.LEFT_SHOULDER, self.mp_pose.PoseLandmark.LEFT_ELBOW, self.mp_pose.PoseLandmark.LEFT_WRIST]
         if self.movement_type == 1:
             indices = [self.mp_pose.PoseLandmark.RIGHT_SHOULDER, self.mp_pose.PoseLandmark.RIGHT_ELBOW, self.mp_pose.PoseLandmark.RIGHT_WRIST]
+        if self.movement_type == 4:
+            indices = [self.mp_pose.PoseLandmark.LEFT_SHOULDER, self.mp_pose.PoseLandmark.RIGHT_SHOULDER, self.mp_pose.PoseLandmark.RIGHT_WRIST]
+        if self.movement_type == 5:
+            indices = [self.mp_pose.PoseLandmark.RIGHT_SHOULDER, self.mp_pose.PoseLandmark.LEFT_SHOULDER, self.mp_pose.PoseLandmark.LEFT_WRIST]
 
         joints = {}
         for name, idx in zip(self.desired_joints, indices):
@@ -157,7 +169,16 @@ class PracticeStudio:
         plt.ylabel("Joint Angle (degrees)")
 
         # Title based on movement type
-        movement_name = "Right Arm Movement" if self.movement_type == 1 else "Left Arm Movement"
+
+        if self.movement_type == 0:
+            movement_name = "Left Arm Curl"
+        if self.movement_type == 1:
+            movement_name = "Right Arm Curl"
+        if self.movement_type == 4:
+            movement_name = "Left Shoulder Abduction"
+        if self.movement_type == 5:
+            movement_name = "Right Shoulder Abduction"
+            
         plt.title(f"Expected {movement_name} Trajectory")
         
         plt.legend()
