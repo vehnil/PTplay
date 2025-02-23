@@ -120,8 +120,6 @@ class PracticeStudio:
 
     def normalize_time_series(self, data, num_points=100):
         """Resamples a variable-length series to a fixed-length using interpolation."""
-        print("hi", len(data))
-        print(data)
         x_old = np.linspace(0, 1, len(data))
         x_new = np.linspace(0, 1, num_points)
         interpolator = interp1d(x_old, data, kind='linear')
